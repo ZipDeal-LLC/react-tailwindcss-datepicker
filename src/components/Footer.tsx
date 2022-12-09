@@ -1,3 +1,4 @@
+import dayjs from "dayjs";
 import React, { useContext } from "react";
 
 import DatepickerContext from "../contexts/DatepickerContext";
@@ -6,11 +7,11 @@ import { PrimaryButton, SecondaryButton } from "./utils";
 
 const Footer: React.FC = () => {
     // Contexts
-    const { hideDatepicker, period, changeDatepickerValue, configs } =
+    const { hideDatepicker, period, changeDatepickerValue, configs, dateValueFormat } =
         useContext(DatepickerContext);
 
     return (
-        <div className="flex items-center justify-end pb-2.5 pt-3 border-t border-gray-300 dark:border-gray-700">
+        <div className="flex items-center justify-end pb-2.5 pt-3 border-t border-gray-300">
             <div className="w-full md:w-auto flex items-center justify-center space-x-3">
                 <SecondaryButton
                     onClick={() => {
@@ -27,8 +28,8 @@ const Footer: React.FC = () => {
                     onClick={() => {
                         if (period.start && period.end) {
                             changeDatepickerValue({
-                                startDate: period.start,
-                                endDate: period.end
+                                startDate: dayjs(period.start).format(dateValueFormat),
+                                endDate: dayjs(period.end).format(dateValueFormat)
                             });
                             hideDatepicker();
                         }

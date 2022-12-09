@@ -22,18 +22,22 @@ const ItemTemplate = React.memo((props: ItemTemplateProps) => {
         dayHover,
         changeDayHover,
         hideDatepicker,
-        changeDatepickerValue
+        changeDatepickerValue,
+        separator,
+        dateValueFormat
     } = useContext(DatepickerContext);
 
     // Functions
     const getClassName: () => string = useCallback(() => {
         const textColor = TEXT_COLOR["600"][primaryColor as keyof typeof TEXT_COLOR["600"]];
         const textColorHover = TEXT_COLOR.hover[primaryColor as keyof typeof TEXT_COLOR.hover];
-        return `whitespace-nowrap w-1/2 md:w-1/3 lg:w-auto transition-all duration-300 hover:bg-gray-100 dark:hover:bg-white/10 p-2 rounded cursor-pointer ${textColor} ${textColorHover}`;
+        return `whitespace-nowrap w-1/2 md:w-1/3 lg:w-auto transition-all duration-300 hover:bg-gray-100 p-2 rounded cursor-pointer ${textColor} ${textColorHover}`;
     }, [primaryColor]);
 
     const chosePeriod = useCallback(
         (item: Period) => {
+            const start = dateValueFormat ? dayjs(item.start).format(dateValueFormat) : item.start;
+            const end = dateValueFormat ? dayjs(item.end).format(dateValueFormat) : item.end;
             if (dayHover) {
                 changeDayHover(null);
             }
@@ -43,25 +47,28 @@ const ItemTemplate = React.memo((props: ItemTemplateProps) => {
                     end: null
                 });
             }
-            changeInputText(`${item.start} ~ ${item.end}`);
+            changeInputText(`${start} ${separator} ${end}`);
             changePeriod(item);
             changeDatepickerValue({
-                startDate: item.start,
-                endDate: item.end
+                startDate: start,
+                endDate: end,
+                marker: item.marker
             });
-            updateFirstDate(dayjs(item.start));
+            updateFirstDate(dayjs(start));
             hideDatepicker();
         },
         [
-            changeDatepickerValue,
-            changeDayHover,
-            changeInputText,
-            changePeriod,
+            dateValueFormat,
             dayHover,
-            hideDatepicker,
-            period.end,
             period.start,
-            updateFirstDate
+            period.end,
+            changeInputText,
+            separator,
+            changePeriod,
+            changeDatepickerValue,
+            updateFirstDate,
+            hideDatepicker,
+            changeDayHover
         ]
     );
 
@@ -98,9 +105,9 @@ const Shortcuts = () => {
     };
 
     return (
-        <div className="md:border-b mb-3 lg:mb-0 lg:border-r lg:border-b-0 border-gray-300 dark:border-gray-700 pr-1">
+        <div className="md:border-b mb-3 lg:mb-0 lg:border-r lg:border-b-0 border-gray-300 pr-1">
             <ul className="w-full tracking-wide flex flex-wrap lg:flex-col pb-1 lg:pb-0">
-                {Object.entries(DEFAULT_SHORTCUTS).map(([key, item], index) =>
+                {Object.entries(configs?.shortcuts || DEFAULT_SHORTCUTS).map(([key, item], index) =>
                     key === "past" ? (
                         (Array.isArray(item) ? item : []).map((item, index) => (
                             <ItemTemplate key={index} item={item}>
@@ -113,11 +120,7 @@ const Shortcuts = () => {
                         ))
                     ) : (
                         <ItemTemplate key={index} item={item}>
-                            <>
-                                {configs && configs.shortcuts && key in configs.shortcuts
-                                    ? configs.shortcuts[key as keyof typeof configs.shortcuts]
-                                    : printItemText(item)}
-                            </>
+                            {printItemText(item)}
                         </ItemTemplate>
                     )
                 )}

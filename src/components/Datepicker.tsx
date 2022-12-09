@@ -43,6 +43,8 @@ interface Props {
     separator?: string;
     startFrom?: Date | null;
     i18n?: string;
+    dateValueFormat?: string;
+    dateStringFormat?: string;
 }
 
 const Datepicker: React.FC<Props> = ({
@@ -57,7 +59,9 @@ const Datepicker: React.FC<Props> = ({
     placeholder = null,
     separator = "~",
     startFrom = null,
-    i18n = "en"
+    i18n = "en",
+    dateValueFormat = "",
+    dateStringFormat = ""
 }) => {
     // Ref
     const containerRef = useRef<HTMLDivElement>(null);
@@ -198,7 +202,9 @@ const Datepicker: React.FC<Props> = ({
                     end: formatDate(endDate)
                 });
                 setInputText(
-                    `${formatDate(startDate)}${asSingle ? "" : ` ~ ${formatDate(endDate)}`}`
+                    `${startDate.format(dateStringFormat)}${
+                        asSingle ? "" : ` ${separator} ${endDate.format(dateStringFormat)}`
+                    }`
                 );
             }
         }
@@ -209,7 +215,7 @@ const Datepicker: React.FC<Props> = ({
                 end: null
             });
         }
-    }, [asSingle, value]);
+    }, [asSingle, dateStringFormat, separator, value]);
 
     // Variable
     const colorPrimary = useMemo(() => {
@@ -237,7 +243,8 @@ const Datepicker: React.FC<Props> = ({
             placeholder,
             separator,
             i18n,
-            value
+            value,
+            dateValueFormat
         };
     }, [
         asSingle,
@@ -253,7 +260,8 @@ const Datepicker: React.FC<Props> = ({
         placeholder,
         separator,
         showFooter,
-        value
+        value,
+        dateValueFormat
     ]);
 
     return (

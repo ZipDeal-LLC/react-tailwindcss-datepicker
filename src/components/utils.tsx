@@ -122,7 +122,7 @@ export const Arrow = React.forwardRef<HTMLDivElement, {}>((props, ref) => {
     return (
         <div
             ref={ref}
-            className="absolute z-20 h-4 w-4 rotate-45 mt-0.5 ml-[1.2rem] border-l border-t border-gray-300 bg-white dark:bg-slate-800 dark:border-slate-600"
+            className="absolute z-20 h-4 w-4 rotate-45 mt-0.5 ml-[1.2rem] border-l border-t border-gray-300 bg-white"
         />
     );
 });
@@ -134,7 +134,7 @@ export const SecondaryButton: React.FC<Button> = ({ children, onClick, disabled 
     // Functions
     const getClassName: () => string = useCallback(() => {
         const ringColor = RING_COLOR.focus[primaryColor as keyof typeof RING_COLOR.focus];
-        return `w-full transition-all duration-300 bg-white dark:text-gray-700 font-medium border border-gray-300 px-4 py-2 text-sm rounded-md focus:ring-2 focus:ring-offset-2 hover:bg-gray-50 ${ringColor}`;
+        return `w-full transition-all duration-300 bg-white font-medium border border-gray-300 px-4 py-2 text-sm rounded-md focus:ring-2 focus:ring-offset-2 hover:bg-gray-50 ${ringColor}`;
     }, [primaryColor]);
 
     return (
@@ -177,10 +177,9 @@ export const RoundedButton: React.FC<Button> = ({
 
     // Functions
     const getClassName = useCallback(() => {
-        const darkClass = "dark:text-white/70 dark:hover:bg-white/10 dark:focus:bg-white/10";
         const defaultClass = !roundedFull
-            ? `w-full tracking-wide ${darkClass} transition-all duration-300 px-3 ${padding} uppercase hover:bg-gray-100 rounded-md focus:ring-1`
-            : `${darkClass} transition-all duration-300 hover:bg-gray-100 rounded-full p-[0.45rem] focus:ring-1`;
+            ? `w-full tracking-wide  transition-all duration-300 px-3 ${padding} uppercase hover:bg-gray-100 rounded-md focus:ring-1`
+            : "transition-all duration-300 hover:bg-gray-100 rounded-full p-[0.45rem] focus:ring-1";
         switch (primaryColor) {
             case "blue":
                 return `${defaultClass} focus:ring-blue-500/50 focus:bg-blue-100/50`;

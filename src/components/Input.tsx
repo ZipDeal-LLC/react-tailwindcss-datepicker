@@ -21,7 +21,8 @@ const Input: React.FC = () => {
         changeDatepickerValue,
         asSingle,
         placeholder,
-        separator
+        separator,
+        dateValueFormat
     } = useContext(DatepickerContext);
 
     // UseRefs
@@ -33,7 +34,7 @@ const Input: React.FC = () => {
         const border = BORDER_COLOR.focus[primaryColor as keyof typeof BORDER_COLOR.focus];
         const ring =
             RING_COLOR["second-focus"][primaryColor as keyof typeof RING_COLOR["second-focus"]];
-        return `relative transition-all duration-300 py-2.5 pl-4 pr-14 w-full border-gray-300 dark:bg-slate-800 dark:text-white/80 dark:border-slate-600 rounded-lg tracking-wide font-light text-sm placeholder-gray-400 bg-white focus:ring ${border} ${ring}`;
+        return `relative transition-all duration-300 py-2.5 pl-4 pr-14 w-full border-gray-300 rounded-lg tracking-wide font-light text-sm placeholder-gray-400 bg-white focus:ring ${border} ${ring}`;
     }, [primaryColor]);
 
     const handleInputChange = useCallback(
@@ -57,10 +58,10 @@ const Input: React.FC = () => {
                 dayjs(start).isBefore(end)
             ) {
                 changeDatepickerValue({
-                    startDate: start,
-                    endDate: end
+                    startDate: dayjs(start).format(dateValueFormat),
+                    endDate: dayjs(end).format(dateValueFormat)
                 });
-                changeDayHover(dayjs(end).add(-1, "day").format("YYYY-MM-DD"));
+                changeDayHover(dayjs(end).add(-1, "day").format(dateValueFormat));
                 hideDatepicker();
                 if (input) {
                     input.blur();
@@ -68,7 +69,7 @@ const Input: React.FC = () => {
             }
             changeInputText(e.target.value);
         },
-        [changeDatepickerValue, changeDayHover, changeInputText, hideDatepicker]
+        [changeDatepickerValue, changeDayHover, changeInputText, dateValueFormat, hideDatepicker]
     );
 
     // UseEffects && UseLayoutEffect

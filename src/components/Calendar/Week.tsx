@@ -9,7 +9,7 @@ const Week: React.FC = () => {
     loadLanguageModule(i18n);
 
     return (
-        <div className="grid grid-cols-7 border-b border-gray-300 dark:border-gray-700 py-2">
+        <div className="grid grid-cols-7 border-b border-gray-300 py-2">
             {[0, 1, 2, 3, 4, 5, 6].map((item, index) => (
                 <div key={index} className="tracking-wide text-gray-500 text-center">
                     {ucFirst(

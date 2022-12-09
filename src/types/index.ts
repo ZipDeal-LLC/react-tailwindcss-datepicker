@@ -1,6 +1,7 @@
 export interface Period {
     start: string | null;
     end: string | null;
+    marker?: string;
 }
 
 export interface Configs {
@@ -15,6 +16,7 @@ export interface Configs {
         cancel?: string;
         apply?: string;
     } | null;
+    dateFormat?: string;
 }
 
 export interface ShortcutsItem {
@@ -23,5 +25,6 @@ export interface ShortcutsItem {
     period?: {
         start: string;
         end: string;
+        marker?: string;
     };
 }

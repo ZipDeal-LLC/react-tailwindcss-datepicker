@@ -6,6 +6,7 @@ import { Configs, Period } from "../types";
 type DateRange = {
     startDate: string | Date | null;
     endDate: string | Date | null;
+    marker?: string;
 } | null;
 
 interface DatepickerStore {
@@ -27,6 +28,7 @@ interface DatepickerStore {
     separator?: string;
     i18n: string;
     value: DateRange;
+    dateValueFormat?: string;
 }
 
 const DatepickerContext = createContext<DatepickerStore>({
@@ -49,7 +51,8 @@ const DatepickerContext = createContext<DatepickerStore>({
     changeDatepickerValue: value => {},
     showFooter: false,
     value: null,
-    i18n: "en"
+    i18n: "en",
+    dateValueFormat: ""
 });
 
 export default DatepickerContext;
