@@ -95,10 +95,8 @@ const Input: React.FC = () => {
             }
         }
 
-        if (buttonRef?.current) {
-            if (button) {
-                button.addEventListener("click", focusInput);
-            }
+        if (button) {
+            button.addEventListener("click", focusInput);
         }
 
         return () => {

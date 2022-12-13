@@ -37,11 +37,11 @@ interface Props {
             cancel?: string;
             apply?: string;
         } | null;
+        past?: boolean;
     } | null;
     asSingle?: boolean;
     placeholder?: string;
     separator?: string;
-    startFrom?: Date | null;
     i18n?: string;
     dateValueFormat?: string;
     dateStringFormat?: string;
@@ -58,7 +58,6 @@ const Datepicker: React.FC<Props> = ({
     asSingle = false,
     placeholder = null,
     separator = "~",
-    startFrom = null,
     i18n = "en",
     dateValueFormat = "",
     dateStringFormat = ""
@@ -68,15 +67,32 @@ const Datepicker: React.FC<Props> = ({
     const calendarContainerRef = useRef<HTMLDivElement>(null);
     const arrowRef = useRef<HTMLDivElement>(null);
 
+    const initialValues = useMemo(() => {
+        const start =
+            value?.startDate && dayjs(value?.startDate).isValid()
+                ? dayjs(value?.startDate)
+                : dayjs();
+        const end =
+            value?.endDate && dayjs(value?.endDate).isValid() ? dayjs(value?.endDate) : dayjs();
+        if (configs?.past) {
+            return {
+                firstDate: start.month() == end.month() ? start.month(start.month() - 1) : start,
+                secondDate: end
+            };
+        }
+        return {
+            firstDate: start,
+            secondDate: nextMonth(start)
+        };
+    }, [configs?.past, value?.endDate, value?.startDate]);
+
     // State
-    const [firstDate, setFirstDate] = useState<dayjs.Dayjs>(
-        startFrom && dayjs(startFrom).isValid() ? dayjs(startFrom) : dayjs()
-    );
+    const [firstDate, setFirstDate] = useState<dayjs.Dayjs>(initialValues.firstDate);
     const [period, setPeriod] = useState<Period>({
         start: null,
         end: null
     });
-    const [secondDate, setSecondDate] = useState<dayjs.Dayjs>(nextMonth(firstDate));
+    const [secondDate, setSecondDate] = useState<dayjs.Dayjs>(initialValues.secondDate);
     const [dayHover, setDayHover] = useState<string | null>(null);
     const [inputText, setInputText] = useState<string>("");
 
@@ -244,7 +260,8 @@ const Datepicker: React.FC<Props> = ({
             separator,
             i18n,
             value,
-            dateValueFormat
+            dateValueFormat,
+            dateStringFormat
         };
     }, [
         asSingle,
@@ -261,7 +278,8 @@ const Datepicker: React.FC<Props> = ({
         separator,
         showFooter,
         value,
-        dateValueFormat
+        dateValueFormat,
+        dateStringFormat
     ]);
 
     return (

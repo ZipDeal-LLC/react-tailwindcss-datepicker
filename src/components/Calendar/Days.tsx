@@ -29,7 +29,7 @@ const Days: React.FC<Props> = ({
     onClickNextDays
 }) => {
     // Contexts
-    const { primaryColor, period, changePeriod, dayHover, changeDayHover } =
+    const { primaryColor, period, changePeriod, dayHover, changeDayHover, configs } =
         useContext(DatepickerContext);
 
     // Functions
@@ -39,10 +39,35 @@ const Days: React.FC<Props> = ({
                 item >= 10 ? item : "0" + item
             }`;
             if (formatDate(dayjs()) === formatDate(dayjs(itemDate)))
-                return getTextColorByPrimaryColor(primaryColor);
+                return `${getTextColorByPrimaryColor(
+                    primaryColor
+                )} bg-gray-100 border rounded-full font-semibold text-lg`;
             return "";
         },
         [calendarData.date, primaryColor]
+    );
+
+    const isDisabled = useCallback(
+        (item: number, type = "") => {
+            let addMonths = 0;
+            switch (type) {
+                case "previous": {
+                    break;
+                }
+                case "next": {
+                    addMonths = 2;
+                    break;
+                }
+                default: {
+                    addMonths = 1;
+                }
+            }
+            const itemDate = `${calendarData.date.year()}-${
+                calendarData.date.month() + addMonths
+            }-${item >= 10 ? item : "0" + item}`;
+            return configs?.past && formatDate(dayjs(itemDate)) > formatDate(dayjs());
+        },
+        [calendarData.date, configs?.past]
     );
 
     const activeDateData = useCallback(
@@ -134,8 +159,10 @@ const Days: React.FC<Props> = ({
     );
 
     const buttonCass = useCallback(
-        (day: number) => {
-            const baseClass = "flex items-center justify-center w-full h-12 lg:w-10 lg:h-10";
+        (day: number, isDisabled = false) => {
+            const baseClass = `flex items-center justify-center w-full h-12 lg:w-10 lg:h-10 ${
+                isDisabled ? "text-gray-300" : ""
+            }`;
             return `${baseClass}${
                 !activeDateData(day).active
                     ? ` ${hoverClassByDay(day)}`
@@ -185,10 +212,14 @@ const Days: React.FC<Props> = ({
             {calendarData.days.previous.map((item, index) => (
                 <button
                     key={index}
-                    className="flex items-center justify-center text-gray-400 w-full h-12 lg:w-10 lg:h-10"
-                    onClick={() => onClickPreviousDays(item)}
+                    className={`flex items-center justify-center w-full h-12 lg:w-10 lg:h-10 ${
+                        isDisabled(item, "previous") ? "text-gray-50" : "text-gray-400"
+                    }`}
+                    onClick={() => {
+                        if (!isDisabled(item, "previous")) onClickPreviousDays(item);
+                    }}
                     onMouseOver={() => {
-                        hoverDay(item, "previous");
+                        if (!isDisabled(item, "previous")) hoverDay(item, "previous");
                     }}
                 >
                     {item}
@@ -198,12 +229,12 @@ const Days: React.FC<Props> = ({
             {calendarData.days.current.map((item, index) => (
                 <button
                     key={index}
-                    className={buttonCass(item)}
+                    className={buttonCass(item, isDisabled(item))}
                     onClick={() => {
-                        onClickDay(item);
+                        if (!isDisabled(item)) onClickDay(item);
                     }}
                     onMouseOver={() => {
-                        hoverDay(item, "current");
+                        if (!isDisabled(item)) hoverDay(item, "current");
                     }}
                 >
                     {item}
@@ -213,12 +244,14 @@ const Days: React.FC<Props> = ({
             {calendarData.days.next.map((item, index) => (
                 <button
                     key={index}
-                    className="flex items-center justify-center text-gray-400 w-full h-12 lg:w-10 lg:h-10"
+                    className={`flex items-center justify-center w-full h-12 lg:w-10 lg:h-10 ${
+                        isDisabled(item, "next") ? "text-gray-50" : "text-gray-400"
+                    }`}
                     onClick={() => {
-                        onClickNextDays(item);
+                        if (!isDisabled(item, "next")) onClickNextDays(item);
                     }}
                     onMouseOver={() => {
-                        hoverDay(item, "next");
+                        if (!isDisabled(item, "next")) hoverDay(item, "next");
                     }}
                 >
                     {item}

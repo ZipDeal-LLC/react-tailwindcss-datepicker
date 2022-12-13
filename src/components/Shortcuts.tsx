@@ -24,7 +24,8 @@ const ItemTemplate = React.memo((props: ItemTemplateProps) => {
         hideDatepicker,
         changeDatepickerValue,
         separator,
-        dateValueFormat
+        dateValueFormat,
+        configs
     } = useContext(DatepickerContext);
 
     // Functions
@@ -48,13 +49,16 @@ const ItemTemplate = React.memo((props: ItemTemplateProps) => {
                 });
             }
             changeInputText(`${start} ${separator} ${end}`);
-            changePeriod(item);
+            changePeriod({
+                start,
+                end
+            });
             changeDatepickerValue({
                 startDate: start,
                 endDate: end,
                 marker: item.marker
             });
-            updateFirstDate(dayjs(start));
+            if (!configs?.past) updateFirstDate(dayjs(start));
             hideDatepicker();
         },
         [
@@ -66,6 +70,7 @@ const ItemTemplate = React.memo((props: ItemTemplateProps) => {
             separator,
             changePeriod,
             changeDatepickerValue,
+            configs?.past,
             updateFirstDate,
             hideDatepicker,
             changeDayHover

@@ -16,7 +16,7 @@ export interface Configs {
         cancel?: string;
         apply?: string;
     } | null;
-    dateFormat?: string;
+    past?: boolean;
 }
 
 export interface ShortcutsItem {

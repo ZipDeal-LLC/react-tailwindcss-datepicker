@@ -29,6 +29,7 @@ interface DatepickerStore {
     i18n: string;
     value: DateRange;
     dateValueFormat?: string;
+    dateStringFormat?: string;
 }
 
 const DatepickerContext = createContext<DatepickerStore>({
@@ -52,7 +53,8 @@ const DatepickerContext = createContext<DatepickerStore>({
     showFooter: false,
     value: null,
     i18n: "en",
-    dateValueFormat: ""
+    dateValueFormat: "",
+    dateStringFormat: ""
 });
 
 export default DatepickerContext;
