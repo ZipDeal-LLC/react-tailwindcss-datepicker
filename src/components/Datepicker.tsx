@@ -45,6 +45,7 @@ interface Props {
     i18n?: string;
     dateValueFormat?: string;
     dateStringFormat?: string;
+    inputClassName?: string;
 }
 
 const Datepicker: React.FC<Props> = ({
@@ -60,7 +61,8 @@ const Datepicker: React.FC<Props> = ({
     separator = "~",
     i18n = "en",
     dateValueFormat = "",
-    dateStringFormat = ""
+    dateStringFormat = "",
+    inputClassName = ""
 }) => {
     // Ref
     const containerRef = useRef<HTMLDivElement>(null);
@@ -198,9 +200,10 @@ const Datepicker: React.FC<Props> = ({
             const screenCenter = window.innerWidth / 2;
             const containerCenter = (detail.right - detail.x) / 2 + detail.x;
             if (containerCenter > screenCenter) {
-                arrow.classList.add("right-0");
-                arrow.classList.add("mr-3.5");
-                calendarContainer.classList.add("right-0");
+                console.log("Don't worry about putting this on the right");
+                // arrow.classList.add("right-0");
+                // arrow.classList.add("mr-3.5");
+                // calendarContainer.classList.add("right-0");
             }
         }
     }, []);
@@ -285,7 +288,7 @@ const Datepicker: React.FC<Props> = ({
     return (
         <DatepickerContext.Provider value={contextValues}>
             <div className="relative w-full text-gray-700" ref={containerRef}>
-                <Input />
+                <Input inputClassName={inputClassName} />
 
                 <div
                     className="transition-all ease-out duration-300 absolute z-10 mt-[1px] text-sm lg:text-xs 2xl:text-sm translate-y-4 opacity-0 hidden"

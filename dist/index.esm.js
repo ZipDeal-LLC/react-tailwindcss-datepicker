@@ -1319,7 +1319,9 @@ const Footer = () => {
                     : "Apply")))));
 };
 
-const Input = () => {
+function r(e){var t,f,n="";if("string"==typeof e||"number"==typeof e)n+=e;else if("object"==typeof e)if(Array.isArray(e))for(t=0;t<e.length;t++)e[t]&&(f=r(e[t]))&&(n&&(n+=" "),n+=f);else for(t in e)e[t]&&(n&&(n+=" "),n+=t);return n}function clsx(){for(var e,t,f=0,n="";f<arguments.length;)(e=arguments[f++])&&(t=r(e))&&(n&&(n+=" "),n+=t);return n}
+
+const Input = ({ inputClassName }) => {
     // Context
     const { primaryColor, period, dayHover, changeDayHover, calendarContainer, inputText, changeInputText, hideDatepicker, changeDatepickerValue, asSingle, placeholder, separator, dateValueFormat } = useContext(DatepickerContext);
     // UseRefs
@@ -1329,8 +1331,13 @@ const Input = () => {
     const getClassName = useCallback(() => {
         const border = BORDER_COLOR.focus[primaryColor];
         const ring = RING_COLOR["second-focus"][primaryColor];
-        return `relative transition-all duration-300 py-2.5 pl-4 pr-14 w-full border-gray-300 rounded-lg tracking-wide font-light text-sm placeholder-gray-400 bg-white focus:ring ${border} ${ring}`;
-    }, [primaryColor]);
+        return clsx({
+            ["relative transition-all duration-300 py-2.5 pl-4 pr-14 w-full border border-gray-300 rounded-lg tracking-wide font-light text-sm placeholder-gray-400 bg-white focus:ring"]: true,
+            [border]: true,
+            [ring]: true,
+            [inputClassName]: !!inputClassName
+        });
+    }, [inputClassName, primaryColor]);
     const handleInputChange = useCallback((e) => {
         const inputValue = e.target.value;
         const start = `${inputValue.slice(0, 4)}-${inputValue.slice(5, 7)}-${inputValue.slice(8, 10)}`;
@@ -1514,7 +1521,7 @@ function useOnClickOutside(ref, handler) {
     }, [ref, handler]);
 }
 
-const Datepicker = ({ primaryColor = "blue", value = null, onChange, useRange = true, showFooter = false, showShortcuts = false, configs = null, asSingle = false, placeholder = null, separator = "~", i18n = "en", dateValueFormat = "", dateStringFormat = "" }) => {
+const Datepicker = ({ primaryColor = "blue", value = null, onChange, useRange = true, showFooter = false, showShortcuts = false, configs = null, asSingle = false, placeholder = null, separator = "~", i18n = "en", dateValueFormat = "", dateStringFormat = "", inputClassName = "" }) => {
     // Ref
     const containerRef = useRef(null);
     const calendarContainerRef = useRef(null);
@@ -1615,9 +1622,10 @@ const Datepicker = ({ primaryColor = "blue", value = null, onChange, useRange = 
             const screenCenter = window.innerWidth / 2;
             const containerCenter = (detail.right - detail.x) / 2 + detail.x;
             if (containerCenter > screenCenter) {
-                arrow.classList.add("right-0");
-                arrow.classList.add("mr-3.5");
-                calendarContainer.classList.add("right-0");
+                console.log("Don't worry about putting this on the right");
+                // arrow.classList.add("right-0");
+                // arrow.classList.add("mr-3.5");
+                // calendarContainer.classList.add("right-0");
             }
         }
     }, []);
@@ -1692,7 +1700,7 @@ const Datepicker = ({ primaryColor = "blue", value = null, onChange, useRange = 
     ]);
     return (React.createElement(DatepickerContext.Provider, { value: contextValues },
         React.createElement("div", { className: "relative w-full text-gray-700", ref: containerRef },
-            React.createElement(Input, null),
+            React.createElement(Input, { inputClassName: inputClassName }),
             React.createElement("div", { className: "transition-all ease-out duration-300 absolute z-10 mt-[1px] text-sm lg:text-xs 2xl:text-sm translate-y-4 opacity-0 hidden", ref: calendarContainerRef },
                 React.createElement(Arrow, { ref: arrowRef }),
                 React.createElement("div", { className: "mt-2.5 shadow-sm border border-gray-300 px-1 py-0.5 bg-white rounded-lg" },

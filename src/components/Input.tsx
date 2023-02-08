@@ -1,3 +1,4 @@
+import clsx from "clsx";
 import dayjs from "dayjs";
 import React, { useCallback, useContext, useEffect, useRef } from "react";
 
@@ -7,7 +8,7 @@ import { dateIsValid } from "../helpers";
 
 import { CloseIcon, DateIcon } from "./utils";
 
-const Input: React.FC = () => {
+const Input: React.FC<{ inputClassName: string }> = ({ inputClassName }) => {
     // Context
     const {
         primaryColor,
@@ -34,8 +35,15 @@ const Input: React.FC = () => {
         const border = BORDER_COLOR.focus[primaryColor as keyof typeof BORDER_COLOR.focus];
         const ring =
             RING_COLOR["second-focus"][primaryColor as keyof typeof RING_COLOR["second-focus"]];
-        return `relative transition-all duration-300 py-2.5 pl-4 pr-14 w-full border-gray-300 rounded-lg tracking-wide font-light text-sm placeholder-gray-400 bg-white focus:ring ${border} ${ring}`;
-    }, [primaryColor]);
+
+        return clsx({
+            ["relative transition-all duration-300 py-2.5 pl-4 pr-14 w-full border border-gray-300 rounded-lg tracking-wide font-light text-sm placeholder-gray-400 bg-white focus:ring"]:
+                true,
+            [border]: true,
+            [ring]: true,
+            [inputClassName]: !!inputClassName
+        });
+    }, [inputClassName, primaryColor]);
 
     const handleInputChange = useCallback(
         (e: React.ChangeEvent<HTMLInputElement>) => {

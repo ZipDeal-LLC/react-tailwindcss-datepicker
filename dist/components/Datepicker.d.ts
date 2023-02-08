@@ -32,6 +32,7 @@ interface Props {
     i18n?: string;
     dateValueFormat?: string;
     dateStringFormat?: string;
+    inputClassName?: string;
 }
 declare const Datepicker: React.FC<Props>;
 export default Datepicker;
