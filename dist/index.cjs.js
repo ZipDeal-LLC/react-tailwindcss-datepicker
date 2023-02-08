@@ -1339,8 +1339,9 @@ const Input = ({ inputClassName }) => {
         const border = BORDER_COLOR.focus[primaryColor];
         const ring = RING_COLOR["second-focus"][primaryColor];
         return clsx({
-            ["relative transition-all duration-300 py-2.5 pl-4 pr-14 w-full border border-gray-300 rounded-lg tracking-wide font-light text-sm placeholder-gray-400 bg-white focus:ring"]: true,
+            ["relative transition-all duration-300 py-2.5 pl-4 pr-10 w-full border border-gray-300 rounded-lg tracking-wide text-sm placeholder-gray-400 bg-white focus:ring"]: true,
             [border]: true,
+            ["font-medium text-gray-500"]: true,
             [ring]: true,
             [inputClassName]: !!inputClassName
         });
