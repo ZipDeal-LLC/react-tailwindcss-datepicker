@@ -1,3 +1,4 @@
+import clsx from "clsx";
 import dayjs from "dayjs";
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
@@ -291,7 +292,10 @@ const Datepicker: React.FC<Props> = ({
                 <Input inputClassName={inputClassName} />
 
                 <div
-                    className="transition-all ease-out duration-300 absolute z-10 mt-[1px] text-sm lg:text-xs 2xl:text-sm translate-y-4 opacity-0 hidden"
+                    className={clsx({
+                        ["transition-all ease-out duration-300 absolute z-201 mt-[1px] text-sm lg:text-xs 2xl:text-sm translate-y-4 opacity-0 hidden"]:
+                            true
+                    })}
                     ref={calendarContainerRef}
                 >
                     <Arrow ref={arrowRef} />

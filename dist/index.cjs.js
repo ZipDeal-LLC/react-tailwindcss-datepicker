@@ -8,6 +8,8 @@ function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'defau
 var dayjs__default = /*#__PURE__*/_interopDefaultLegacy(dayjs);
 var React__default = /*#__PURE__*/_interopDefaultLegacy(React);
 
+function r(e){var t,f,n="";if("string"==typeof e||"number"==typeof e)n+=e;else if("object"==typeof e)if(Array.isArray(e))for(t=0;t<e.length;t++)e[t]&&(f=r(e[t]))&&(n&&(n+=" "),n+=f);else for(t in e)e[t]&&(n&&(n+=" "),n+=t);return n}function clsx(){for(var e,t,f=0,n="";f<arguments.length;)(e=arguments[f++])&&(t=r(e))&&(n&&(n+=" "),n+=t);return n}
+
 const DatepickerContext = React.createContext({
     primaryColor: "blue",
     calendarContainer: null,
@@ -1326,8 +1328,6 @@ const Footer = () => {
                     : "Apply")))));
 };
 
-function r(e){var t,f,n="";if("string"==typeof e||"number"==typeof e)n+=e;else if("object"==typeof e)if(Array.isArray(e))for(t=0;t<e.length;t++)e[t]&&(f=r(e[t]))&&(n&&(n+=" "),n+=f);else for(t in e)e[t]&&(n&&(n+=" "),n+=t);return n}function clsx(){for(var e,t,f=0,n="";f<arguments.length;)(e=arguments[f++])&&(t=r(e))&&(n&&(n+=" "),n+=t);return n}
-
 const Input = ({ inputClassName }) => {
     // Context
     const { primaryColor, period, dayHover, changeDayHover, calendarContainer, inputText, changeInputText, hideDatepicker, changeDatepickerValue, asSingle, placeholder, separator, dateValueFormat } = React.useContext(DatepickerContext);
@@ -1708,7 +1708,9 @@ const Datepicker = ({ primaryColor = "blue", value = null, onChange, useRange = 
     return (React__default["default"].createElement(DatepickerContext.Provider, { value: contextValues },
         React__default["default"].createElement("div", { className: "relative w-full text-gray-700", ref: containerRef },
             React__default["default"].createElement(Input, { inputClassName: inputClassName }),
-            React__default["default"].createElement("div", { className: "transition-all ease-out duration-300 absolute z-10 mt-[1px] text-sm lg:text-xs 2xl:text-sm translate-y-4 opacity-0 hidden", ref: calendarContainerRef },
+            React__default["default"].createElement("div", { className: clsx({
+                    ["transition-all ease-out duration-300 absolute z-201 mt-[1px] text-sm lg:text-xs 2xl:text-sm translate-y-4 opacity-0 hidden"]: true
+                }), ref: calendarContainerRef },
                 React__default["default"].createElement(Arrow, { ref: arrowRef }),
                 React__default["default"].createElement("div", { className: "mt-2.5 shadow-sm border border-gray-300 px-1 py-0.5 bg-white rounded-lg" },
                     React__default["default"].createElement("div", { className: "flex flex-col lg:flex-row py-2" },
