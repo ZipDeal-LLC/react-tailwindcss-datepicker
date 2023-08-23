@@ -1001,7 +1001,7 @@ const Days = ({ calendarData, onClickPreviousDays, onClickDay, onClickNextDays }
             if (dayjs(fullDay).isBetween(period.start, period.end, "day", "[)")) {
                 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                 // @ts-ignore
-                return ` ${BG_COLOR["100"][primaryColor]} ${currentDateClass(day)}`;
+                return ` ${BG_COLOR["500"][primaryColor]} ${currentDateClass(day)} text-white`;
             }
         }
         if (!dayHover) {
