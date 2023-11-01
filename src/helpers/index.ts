@@ -143,437 +143,439 @@ export function getFirstDaysInMonth(date: string | dayjs.Dayjs, size = 0) {
     return getFirstElementsInArray(getDaysInMonth(date), size);
 }
 
-export function loadLanguageModule(language = "en") {
+export async function loadLanguageModule(language = "en"): Promise<void> {
+    let locale;
     switch (language) {
         case "af":
-            require("dayjs/locale/af");
+            locale = await import("dayjs/locale/af");
             break;
         case "am":
-            require("dayjs/locale/am");
+            locale = await import("dayjs/locale/am");
             break;
         case "ar-dz":
-            require("dayjs/locale/ar-dz");
+            locale = await import("dayjs/locale/ar-dz");
             break;
         case "ar-iq":
-            require("dayjs/locale/ar-iq");
+            locale = await import("dayjs/locale/ar-iq");
             break;
         case "ar-kw":
-            require("dayjs/locale/ar-kw");
+            locale = await import("dayjs/locale/ar-kw");
             break;
         case "ar-ly":
-            require("dayjs/locale/ar-ly");
+            locale = await import("dayjs/locale/ar-ly");
             break;
         case "ar-ma":
-            require("dayjs/locale/ar-ma");
+            locale = await import("dayjs/locale/ar-ma");
             break;
         case "ar-sa":
-            require("dayjs/locale/ar-sa");
+            locale = await import("dayjs/locale/ar-sa");
             break;
         case "ar-tn":
-            require("dayjs/locale/ar-tn");
+            locale = await import("dayjs/locale/ar-tn");
             break;
         case "ar":
-            require("dayjs/locale/ar");
+            locale = await import("dayjs/locale/ar");
             break;
         case "az":
-            require("dayjs/locale/az");
+            locale = await import("dayjs/locale/az");
             break;
         case "bg":
-            require("dayjs/locale/bg");
+            locale = await import("dayjs/locale/bg");
             break;
         case "bi":
-            require("dayjs/locale/bi");
+            locale = await import("dayjs/locale/bi");
             break;
         case "bm":
-            require("dayjs/locale/bm");
+            locale = await import("dayjs/locale/bm");
             break;
         case "bn-bd":
-            require("dayjs/locale/bn-bd");
+            locale = await import("dayjs/locale/bn-bd");
             break;
         case "bn":
-            require("dayjs/locale/bn");
+            locale = await import("dayjs/locale/bn");
             break;
         case "bo":
-            require("dayjs/locale/bo");
+            locale = await import("dayjs/locale/bo");
             break;
         case "br":
-            require("dayjs/locale/br");
+            locale = await import("dayjs/locale/br");
             break;
         case "ca":
-            require("dayjs/locale/ca");
+            locale = await import("dayjs/locale/ca");
             break;
         case "cs":
-            require("dayjs/locale/cs");
+            locale = await import("dayjs/locale/cs");
             break;
         case "cv":
-            require("dayjs/locale/cv");
+            locale = await import("dayjs/locale/cv");
             break;
         case "cy":
-            require("dayjs/locale/cy");
+            locale = await import("dayjs/locale/cy");
             break;
 
         case "da":
-            require("dayjs/locale/da");
+            locale = await import("dayjs/locale/da");
             break;
         case "de-at":
-            require("dayjs/locale/de-at");
+            locale = await import("dayjs/locale/de-at");
             break;
         case "de-ch":
-            require("dayjs/locale/de-ch");
+            locale = await import("dayjs/locale/de-ch");
             break;
         case "de":
-            require("dayjs/locale/de");
+            locale = await import("dayjs/locale/de");
             break;
         case "dv":
-            require("dayjs/locale/dv");
+            locale = await import("dayjs/locale/dv");
             break;
 
         case "el":
-            require("dayjs/locale/el");
+            locale = await import("dayjs/locale/el");
             break;
         case "en-au":
-            require("dayjs/locale/en-au");
+            locale = await import("dayjs/locale/en-au");
             break;
         case "en-gb":
-            require("dayjs/locale/en-gb");
+            locale = await import("dayjs/locale/en-gb");
             break;
         case "en-ie":
-            require("dayjs/locale/en-ie");
+            locale = await import("dayjs/locale/en-ie");
             break;
         case "en-il":
-            require("dayjs/locale/en-il");
+            locale = await import("dayjs/locale/en-il");
             break;
         case "en-in":
-            require("dayjs/locale/en-in");
+            locale = await import("dayjs/locale/en-in");
             break;
         case "en-nz":
-            require("dayjs/locale/en-nz");
+            locale = await import("dayjs/locale/en-nz");
             break;
         case "en-sg":
-            require("dayjs/locale/en-sg");
+            locale = await import("dayjs/locale/en-sg");
             break;
         case "en-tt":
-            require("dayjs/locale/en-tt");
+            locale = await import("dayjs/locale/en-tt");
             break;
         case "en":
-            require("dayjs/locale/en");
+            locale = await import("dayjs/locale/en");
             break;
         case "eo":
-            require("dayjs/locale/eo");
+            locale = await import("dayjs/locale/eo");
             break;
         case "es-do":
-            require("dayjs/locale/es-do");
+            locale = await import("dayjs/locale/es-do");
             break;
         case "es-mx":
-            require("dayjs/locale/es-mx");
+            locale = await import("dayjs/locale/es-mx");
             break;
         case "es-pr":
-            require("dayjs/locale/es-pr");
+            locale = await import("dayjs/locale/es-pr");
             break;
         case "es-us":
-            require("dayjs/locale/es-us");
+            locale = await import("dayjs/locale/es-us");
             break;
         case "es":
-            require("dayjs/locale/es");
+            locale = await import("dayjs/locale/es");
             break;
         case "et":
-            require("dayjs/locale/et");
+            locale = await import("dayjs/locale/et");
             break;
         case "eu":
-            require("dayjs/locale/eu");
+            locale = await import("dayjs/locale/eu");
             break;
 
         case "fa":
-            require("dayjs/locale/fa");
+            locale = await import("dayjs/locale/fa");
             break;
         case "fi":
-            require("dayjs/locale/fi");
+            locale = await import("dayjs/locale/fi");
             break;
         case "fo":
-            require("dayjs/locale/fo");
+            locale = await import("dayjs/locale/fo");
             break;
         case "fr-ch":
-            require("dayjs/locale/fr-ch");
+            locale = await import("dayjs/locale/fr-ch");
             break;
         case "fr":
-            require("dayjs/locale/fr");
+            locale = await import("dayjs/locale/fr");
             break;
         case "fy":
-            require("dayjs/locale/fy");
+            locale = await import("dayjs/locale/fy");
             break;
         case "ga":
-            require("dayjs/locale/ga");
+            locale = await import("dayjs/locale/ga");
             break;
         case "gd":
-            require("dayjs/locale/gd");
+            locale = await import("dayjs/locale/gd");
             break;
         case "gl":
-            require("dayjs/locale/gl");
+            locale = await import("dayjs/locale/gl");
             break;
         case "gom-latn":
-            require("dayjs/locale/gom-latn");
+            locale = await import("dayjs/locale/gom-latn");
             break;
         case "gu":
-            require("dayjs/locale/gu");
+            locale = await import("dayjs/locale/gu");
             break;
         case "he":
-            require("dayjs/locale/he");
+            locale = await import("dayjs/locale/he");
             break;
         case "hi":
-            require("dayjs/locale/hi");
+            locale = await import("dayjs/locale/hi");
             break;
         case "hr":
-            require("dayjs/locale/hr");
+            locale = await import("dayjs/locale/hr");
             break;
         case "ht":
-            require("dayjs/locale/ht");
+            locale = await import("dayjs/locale/ht");
             break;
         case "hu":
-            require("dayjs/locale/hu");
+            locale = await import("dayjs/locale/hu");
             break;
         case "hy-am":
-            require("dayjs/locale/hy-am");
+            locale = await import("dayjs/locale/hy-am");
             break;
 
         case "id":
-            require("dayjs/locale/id");
+            locale = await import("dayjs/locale/id");
             break;
         case "is":
-            require("dayjs/locale/is");
+            locale = await import("dayjs/locale/is");
             break;
         case "it-ch":
-            require("dayjs/locale/it-ch");
+            locale = await import("dayjs/locale/it-ch");
             break;
         case "it":
-            require("dayjs/locale/it");
+            locale = await import("dayjs/locale/it");
             break;
 
         case "ja":
-            require("dayjs/locale/ja");
+            locale = await import("dayjs/locale/ja");
             break;
         case "jv":
-            require("dayjs/locale/jv");
+            locale = await import("dayjs/locale/jv");
             break;
 
         case "ka":
-            require("dayjs/locale/ka");
+            locale = await import("dayjs/locale/ka");
             break;
         case "kk":
-            require("dayjs/locale/kk");
+            locale = await import("dayjs/locale/kk");
             break;
         case "ko":
-            require("dayjs/locale/ko");
+            locale = await import("dayjs/locale/ko");
             break;
         case "ku":
-            require("dayjs/locale/ku");
+            locale = await import("dayjs/locale/ku");
             break;
         case "ky":
-            require("dayjs/locale/ky");
+            locale = await import("dayjs/locale/ky");
             break;
 
         case "lb":
-            require("dayjs/locale/lb");
+            locale = await import("dayjs/locale/lb");
             break;
         case "lo":
-            require("dayjs/locale/lo");
+            locale = await import("dayjs/locale/lo");
             break;
         case "lt":
-            require("dayjs/locale/lt");
+            locale = await import("dayjs/locale/lt");
             break;
         case "lv":
-            require("dayjs/locale/lv");
+            locale = await import("dayjs/locale/lv");
             break;
 
         case "me":
-            require("dayjs/locale/me");
+            locale = await import("dayjs/locale/me");
             break;
         case "mi":
-            require("dayjs/locale/mi");
+            locale = await import("dayjs/locale/mi");
             break;
         case "mk":
-            require("dayjs/locale/mk");
+            locale = await import("dayjs/locale/mk");
             break;
         case "ml":
-            require("dayjs/locale/ml");
+            locale = await import("dayjs/locale/ml");
             break;
         case "mn":
-            require("dayjs/locale/mn");
+            locale = await import("dayjs/locale/mn");
             break;
         case "ms-my":
-            require("dayjs/locale/ms-my");
+            locale = await import("dayjs/locale/ms-my");
             break;
         case "ms":
-            require("dayjs/locale/ms");
+            locale = await import("dayjs/locale/ms");
             break;
         case "mt":
-            require("dayjs/locale/mt");
+            locale = await import("dayjs/locale/mt");
             break;
         case "my":
-            require("dayjs/locale/my");
+            locale = await import("dayjs/locale/my");
             break;
 
         case "nb":
-            require("dayjs/locale/nb");
+            locale = await import("dayjs/locale/nb");
             break;
         case "ne":
-            require("dayjs/locale/ne");
+            locale = await import("dayjs/locale/ne");
             break;
         case "nl-be":
-            require("dayjs/locale/nl-be");
+            locale = await import("dayjs/locale/nl-be");
             break;
         case "nl":
-            require("dayjs/locale/nl");
+            locale = await import("dayjs/locale/nl");
             break;
         case "nn":
-            require("dayjs/locale/nn");
+            locale = await import("dayjs/locale/nn");
             break;
 
         case "oc-lnc":
-            require("dayjs/locale/oc-lnc");
+            locale = await import("dayjs/locale/oc-lnc");
             break;
 
         case "pa-in":
-            require("dayjs/locale/pa-in");
+            locale = await import("dayjs/locale/pa-in");
             break;
         case "pl":
-            require("dayjs/locale/pl");
+            locale = await import("dayjs/locale/pl");
             break;
         case "pt-br":
-            require("dayjs/locale/pt-br");
+            locale = await import("dayjs/locale/pt-br");
             break;
         case "pt":
-            require("dayjs/locale/pt");
+            locale = await import("dayjs/locale/pt");
             break;
 
         case "rn":
-            require("dayjs/locale/rn");
+            locale = await import("dayjs/locale/rn");
             break;
         case "ro":
-            require("dayjs/locale/ro");
+            locale = await import("dayjs/locale/ro");
             break;
         case "ru":
-            require("dayjs/locale/ru");
+            locale = await import("dayjs/locale/ru");
             break;
         case "rw":
-            require("dayjs/locale/rw");
+            locale = await import("dayjs/locale/rw");
             break;
 
         case "sd":
-            require("dayjs/locale/sd");
+            locale = await import("dayjs/locale/sd");
             break;
         case "se":
-            require("dayjs/locale/se");
+            locale = await import("dayjs/locale/se");
             break;
         case "si":
-            require("dayjs/locale/si");
+            locale = await import("dayjs/locale/si");
             break;
         case "sk":
-            require("dayjs/locale/sk");
+            locale = await import("dayjs/locale/sk");
             break;
         case "sl":
-            require("dayjs/locale/sl");
+            locale = await import("dayjs/locale/sl");
             break;
         case "sq":
-            require("dayjs/locale/sq");
+            locale = await import("dayjs/locale/sq");
             break;
         case "sr":
-            require("dayjs/locale/sr");
+            locale = await import("dayjs/locale/sr");
             break;
         case "sr-cyrl":
-            require("dayjs/locale/sr-cyrl");
+            locale = await import("dayjs/locale/sr-cyrl");
             break;
         case "ss":
-            require("dayjs/locale/ss");
+            locale = await import("dayjs/locale/ss");
             break;
         case "sv-fi":
-            require("dayjs/locale/sv-fi");
+            locale = await import("dayjs/locale/sv-fi");
             break;
         case "sv":
-            require("dayjs/locale/sv");
+            locale = await import("dayjs/locale/sv");
             break;
         case "sw":
-            require("dayjs/locale/sw");
+            locale = await import("dayjs/locale/sw");
             break;
 
         case "ta":
-            require("dayjs/locale/ta");
+            locale = await import("dayjs/locale/ta");
             break;
         case "te":
-            require("dayjs/locale/te");
+            locale = await import("dayjs/locale/te");
             break;
         case "tg":
-            require("dayjs/locale/tg");
+            locale = await import("dayjs/locale/tg");
             break;
         case "th":
-            require("dayjs/locale/th");
+            locale = await import("dayjs/locale/th");
             break;
         case "tk":
-            require("dayjs/locale/tk");
+            locale = await import("dayjs/locale/tk");
             break;
         case "tl-ph":
-            require("dayjs/locale/tl-ph");
+            locale = await import("dayjs/locale/tl-ph");
             break;
         case "tlh":
-            require("dayjs/locale/tlh");
+            locale = await import("dayjs/locale/tlh");
             break;
         case "tr":
-            require("dayjs/locale/tr");
+            locale = await import("dayjs/locale/tr");
             break;
         case "tzl":
-            require("dayjs/locale/tzl");
+            locale = await import("dayjs/locale/tzl");
             break;
         case "tzm-latn":
-            require("dayjs/locale/tzm-latn");
+            locale = await import("dayjs/locale/tzm-latn");
             break;
         case "tzm":
-            require("dayjs/locale/tzm");
+            locale = await import("dayjs/locale/tzm");
             break;
 
         case "ug-cn":
-            require("dayjs/locale/ug-cn");
+            locale = await import("dayjs/locale/ug-cn");
             break;
         case "uk":
-            require("dayjs/locale/uk");
+            locale = await import("dayjs/locale/uk");
             break;
         case "ur":
-            require("dayjs/locale/ur");
+            locale = await import("dayjs/locale/ur");
             break;
         case "uz-latn":
-            require("dayjs/locale/uz-latn");
+            locale = await import("dayjs/locale/uz-latn");
             break;
         case "uz":
-            require("dayjs/locale/uz");
+            locale = await import("dayjs/locale/uz");
             break;
 
         case "vi":
-            require("dayjs/locale/vi");
+            locale = await import("dayjs/locale/vi");
             break;
 
         case "x-pseudo":
-            require("dayjs/locale/x-pseudo");
+            locale = await import("dayjs/locale/x-pseudo");
             break;
 
         case "yo":
-            require("dayjs/locale/yo");
+            locale = await import("dayjs/locale/yo");
             break;
 
         case "zh-cn":
-            require("dayjs/locale/zh-cn");
+            locale = await import("dayjs/locale/zh-cn");
             break;
         case "zh-hk":
-            require("dayjs/locale/zh-hk");
+            locale = await import("dayjs/locale/zh-hk");
             break;
         case "zh-tw":
-            require("dayjs/locale/zh-tw");
+            locale = await import("dayjs/locale/zh-tw");
             break;
         case "zh":
-            require("dayjs/locale/zh");
+            locale = await import("dayjs/locale/zh");
             break;
 
         default:
-            require("dayjs/locale/en");
+            locale = await import("dayjs/locale/en");
             break;
     }
+    dayjs.locale(locale);
 }
 
 export function dateIsValid(date: Date | number) {

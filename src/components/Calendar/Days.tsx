@@ -1,11 +1,11 @@
 import dayjs from "dayjs";
+import isBetween from "dayjs/plugin/isBetween";
 import React, { useCallback, useContext } from "react";
 
 import { BG_COLOR } from "../../constants";
 import DatepickerContext from "../../contexts/DatepickerContext";
 import { formatDate, getTextColorByPrimaryColor, nextMonth, previousMonth } from "../../helpers";
 
-const isBetween = require("dayjs/plugin/isBetween");
 dayjs.extend(isBetween);
 
 interface Props {

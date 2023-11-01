@@ -6,7 +6,9 @@ import { loadLanguageModule, shortString, ucFirst } from "../../helpers";
 
 const Week: React.FC = () => {
     const { i18n } = useContext(DatepickerContext);
-    loadLanguageModule(i18n);
+    loadLanguageModule(i18n).then(() => {
+        return "";
+    });
 
     return (
         <div className="grid grid-cols-7 border-b border-gray-300 py-2">

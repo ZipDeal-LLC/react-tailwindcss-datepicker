@@ -22,5 +22,5 @@ export declare function getLastElementsInArray(array?: number[], size?: number):
 export declare function getNumberOfDay(dayString: string): number;
 export declare function getLastDaysInMonth(date: dayjs.Dayjs | string, size?: number): number[];
 export declare function getFirstDaysInMonth(date: string | dayjs.Dayjs, size?: number): number[];
-export declare function loadLanguageModule(language?: string): void;
+export declare function loadLanguageModule(language?: string): Promise<void>;
 export declare function dateIsValid(date: Date | number): boolean;

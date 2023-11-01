@@ -53,7 +53,9 @@ const Calendar: React.FC<Props> = ({
         asSingle,
         i18n
     } = useContext(DatepickerContext);
-    loadLanguageModule(i18n);
+    loadLanguageModule(i18n).then(() => {
+        return "";
+    });
 
     // States
     const [showMonths, setShowMonths] = useState(false);

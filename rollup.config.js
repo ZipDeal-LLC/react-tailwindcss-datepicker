@@ -6,6 +6,7 @@ const packageJson = require("./package.json");
 
 export default {
     input: "src/index.tsx",
+    inlineDynamicImports: true,
     output: [
         {
             file: packageJson.main,
