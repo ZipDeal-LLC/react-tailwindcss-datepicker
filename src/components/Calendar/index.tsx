@@ -1,6 +1,7 @@
 import dayjs from "dayjs";
 import React, { useCallback, useContext, useEffect, useMemo, useState } from "react";
 
+import { CALENDAR_SIZE, DATE_FORMAT } from "../../constants";
 import DatepickerContext from "../../contexts/DatepickerContext";
 import {
     formatDate,
@@ -11,8 +12,7 @@ import {
     getNumberOfDay,
     loadLanguageModule,
     nextMonth,
-    previousMonth,
-    shortString
+    previousMonth
 } from "../../helpers";
 import {
     ChevronLeftIcon,
@@ -27,8 +27,12 @@ import Months from "./Months";
 import Week from "./Week";
 import Years from "./Years";
 
+import { DateType } from "types";
+
 interface Props {
     date: dayjs.Dayjs;
+    minDate?: DateType | null;
+    maxDate?: DateType | null;
     onClickPrevious: () => void;
     onClickNext: () => void;
     changeMonth: (month: number) => void;
@@ -37,6 +41,8 @@ interface Props {
 
 const Calendar: React.FC<Props> = ({
     date,
+    minDate,
+    maxDate,
     onClickPrevious,
     onClickNext,
     changeMonth,
@@ -51,7 +57,9 @@ const Calendar: React.FC<Props> = ({
         changeDatepickerValue,
         hideDatepicker,
         asSingle,
-        i18n
+        i18n,
+        startWeekOn,
+        input
     } = useContext(DatepickerContext);
     loadLanguageModule(i18n);
 
@@ -59,14 +67,13 @@ const Calendar: React.FC<Props> = ({
     const [showMonths, setShowMonths] = useState(false);
     const [showYears, setShowYears] = useState(false);
     const [year, setYear] = useState(date.year());
-
     // Functions
     const previous = useCallback(() => {
         return getLastDaysInMonth(
             previousMonth(date),
-            getNumberOfDay(getFirstDayInMonth(date).ddd) - 1
+            getNumberOfDay(getFirstDayInMonth(date).ddd, startWeekOn)
         );
-    }, [date]);
+    }, [date, startWeekOn]);
 
     const current = useCallback(() => {
         return getDaysInMonth(formatDate(date));
@@ -75,20 +82,16 @@ const Calendar: React.FC<Props> = ({
     const next = useCallback(() => {
         return getFirstDaysInMonth(
             previousMonth(date),
-            42 - (previous().length + current().length)
+            CALENDAR_SIZE - (previous().length + current().length)
         );
     }, [current, date, previous]);
 
-    const hiddeMonths = useCallback(() => {
-        if (showMonths) {
-            setShowMonths(false);
-        }
+    const hideMonths = useCallback(() => {
+        showMonths && setShowMonths(false);
     }, [showMonths]);
 
-    const hiddeYears = useCallback(() => {
-        if (showYears) {
-            setShowYears(false);
-        }
+    const hideYears = useCallback(() => {
+        showYears && setShowYears(false);
     }, [showYears]);
 
     const clickMonth = useCallback(
@@ -118,10 +121,14 @@ const Calendar: React.FC<Props> = ({
             let newEnd = null;
 
             function chosePeriod(start: string, end: string) {
-                changeDatepickerValue({
-                    startDate: start,
-                    endDate: end
-                });
+                const ipt = input?.current;
+                changeDatepickerValue(
+                    {
+                        startDate: dayjs(start).format(DATE_FORMAT),
+                        endDate: dayjs(end).format(DATE_FORMAT)
+                    },
+                    ipt
+                );
                 hideDatepicker();
             }
 
@@ -186,7 +193,8 @@ const Calendar: React.FC<Props> = ({
             hideDatepicker,
             period.end,
             period.start,
-            showFooter
+            showFooter,
+            input
         ]
     );
 
@@ -224,10 +232,18 @@ const Calendar: React.FC<Props> = ({
             }
         };
     }, [current, date, next, previous]);
+    const minYear = React.useMemo(
+        () => (minDate && dayjs(minDate).isValid() ? dayjs(minDate).year() : null),
+        [minDate]
+    );
+    const maxYear = React.useMemo(
+        () => (maxDate && dayjs(maxDate).isValid() ? dayjs(maxDate).year() : null),
+        [maxDate]
+    );
 
     return (
-        <div className="w-full md:w-[297px] md:min-w-[297px]">
-            <div className="flex items-center space-x-1.5 border border-gray-300 rounded-md px-2 py-1.5">
+        <div className="w-full md:w-[296px] md:min-w-[296px]">
+            <div className="flex items-center space-x-1.5 border border-gray-300 dark:border-gray-700 rounded-md px-2 py-1.5">
                 {!showMonths && !showYears && (
                     <div className="flex-none">
                         <RoundedButton roundedFull={true} onClick={onClickPrevious}>
@@ -254,10 +270,10 @@ const Calendar: React.FC<Props> = ({
                         <RoundedButton
                             onClick={() => {
                                 setShowMonths(!showMonths);
-                                hiddeYears();
+                                hideYears();
                             }}
                         >
-                            <>{shortString(calendarData.date.locale(i18n).format("MMM"))}</>
+                            <>{calendarData.date.locale(i18n).format("MMM")}</>
                         </RoundedButton>
                     </div>
 
@@ -265,21 +281,13 @@ const Calendar: React.FC<Props> = ({
                         <RoundedButton
                             onClick={() => {
                                 setShowYears(!showYears);
-                                hiddeMonths();
+                                hideMonths();
                             }}
                         >
                             <>{calendarData.date.year()}</>
                         </RoundedButton>
                     </div>
                 </div>
-
-                {!showMonths && !showYears && (
-                    <div className="flex-none">
-                        <RoundedButton roundedFull={true} onClick={onClickNext}>
-                            <ChevronRightIcon className="h-5 w-5" />
-                        </RoundedButton>
-                    </div>
-                )}
 
                 {showYears && (
                     <div className="flex-none">
@@ -293,12 +301,30 @@ const Calendar: React.FC<Props> = ({
                         </RoundedButton>
                     </div>
                 )}
+
+                {!showMonths && !showYears && (
+                    <div className="flex-none">
+                        <RoundedButton roundedFull={true} onClick={onClickNext}>
+                            <ChevronRightIcon className="h-5 w-5" />
+                        </RoundedButton>
+                    </div>
+                )}
             </div>
 
             <div className="px-0.5 sm:px-2 mt-0.5 min-h-[285px]">
-                {showMonths && <Months clickMonth={clickMonth} />}
+                {showMonths && (
+                    <Months currentMonth={calendarData.date.month() + 1} clickMonth={clickMonth} />
+                )}
 
-                {showYears && <Years year={year} clickYear={clickYear} />}
+                {showYears && (
+                    <Years
+                        year={year}
+                        minYear={minYear}
+                        maxYear={maxYear}
+                        currentYear={calendarData.date.year()}
+                        clickYear={clickYear}
+                    />
+                )}
 
                 {!showMonths && !showYears && (
                     <>

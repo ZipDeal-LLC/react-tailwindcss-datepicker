@@ -1,7 +1,8 @@
 import dayjs from "dayjs";
-import React, { useCallback, useContext } from "react";
+import React, { useCallback, useContext, useMemo } from "react";
 
-import { DEFAULT_SHORTCUTS, TEXT_COLOR } from "../constants";
+import { DATE_FORMAT, TEXT_COLOR } from "../constants";
+import DEFAULT_SHORTCUTS from "../constants/shortcuts";
 import DatepickerContext from "../contexts/DatepickerContext";
 import { Period, ShortcutsItem } from "../types";
 
@@ -17,28 +18,22 @@ const ItemTemplate = React.memo((props: ItemTemplateProps) => {
         primaryColor,
         period,
         changePeriod,
-        changeInputText,
         updateFirstDate,
         dayHover,
         changeDayHover,
         hideDatepicker,
-        changeDatepickerValue,
-        separator,
-        dateValueFormat,
-        configs
+        changeDatepickerValue
     } = useContext(DatepickerContext);
 
     // Functions
     const getClassName: () => string = useCallback(() => {
-        const textColor = TEXT_COLOR["600"][primaryColor as keyof typeof TEXT_COLOR["600"]];
+        const textColor = TEXT_COLOR["600"][primaryColor as keyof (typeof TEXT_COLOR)["600"]];
         const textColorHover = TEXT_COLOR.hover[primaryColor as keyof typeof TEXT_COLOR.hover];
-        return `whitespace-nowrap w-1/2 md:w-1/3 lg:w-auto transition-all duration-300 hover:bg-gray-100 p-2 rounded cursor-pointer ${textColor} ${textColorHover}`;
+        return `whitespace-nowrap w-1/2 md:w-1/3 lg:w-auto transition-all duration-300 hover:bg-gray-100 dark:hover:bg-white/10 p-2 rounded cursor-pointer ${textColor} ${textColorHover}`;
     }, [primaryColor]);
 
     const chosePeriod = useCallback(
         (item: Period) => {
-            const start = dateValueFormat ? dayjs(item.start).format(dateValueFormat) : item.start;
-            const end = dateValueFormat ? dayjs(item.end).format(dateValueFormat) : item.end;
             if (dayHover) {
                 changeDayHover(null);
             }
@@ -48,37 +43,26 @@ const ItemTemplate = React.memo((props: ItemTemplateProps) => {
                     end: null
                 });
             }
-            changeInputText(`${start} ${separator} ${end}`);
-            changePeriod({
-                start,
-                end
-            });
+            changePeriod(item);
             changeDatepickerValue({
-                startDate: start,
-                endDate: end,
-                marker: item.marker
+                startDate: item.start,
+                endDate: item.end
             });
-            if (!configs?.past) updateFirstDate(dayjs(start));
+            updateFirstDate(dayjs(item.start));
             hideDatepicker();
         },
         [
-            dateValueFormat,
-            dayHover,
-            period.start,
-            period.end,
-            changeInputText,
-            separator,
-            changePeriod,
             changeDatepickerValue,
-            configs?.past,
-            updateFirstDate,
+            changeDayHover,
+            changePeriod,
+            dayHover,
             hideDatepicker,
-            changeDayHover
+            period.end,
+            period.start,
+            updateFirstDate
         ]
     );
 
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
     const children = props?.children;
 
     return (
@@ -95,43 +79,95 @@ const ItemTemplate = React.memo((props: ItemTemplateProps) => {
     );
 });
 
-const Shortcuts = () => {
+const Shortcuts: React.FC = () => {
     // Contexts
     const { configs } = useContext(DatepickerContext);
 
-    const callPastFunction = (data: unknown, numberValue: number) => {
+    const callPastFunction = useCallback((data: unknown, numberValue: number) => {
         return typeof data === "function" ? data(numberValue) : null;
-    };
+    }, []);
 
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    const printItemText = item => {
-        return "text" in item ? item.text : "";
-    };
+    const shortcutOptions = useMemo<[string, ShortcutsItem | ShortcutsItem[]][]>(() => {
+        if (!configs?.shortcuts) {
+            return Object.entries(DEFAULT_SHORTCUTS);
+        }
 
-    return (
-        <div className="md:border-b mb-3 lg:mb-0 lg:border-r lg:border-b-0 border-gray-300 pr-1">
+        return Object.entries(configs.shortcuts).flatMap(([key, customConfig]) => {
+            if (Object.prototype.hasOwnProperty.call(DEFAULT_SHORTCUTS, key)) {
+                return [[key, DEFAULT_SHORTCUTS[key]]];
+            }
+
+            const { text, period } = customConfig as {
+                text: string;
+                period: { start: string; end: string };
+            };
+            if (!text || !period) {
+                return [];
+            }
+
+            const start = dayjs(period.start);
+            const end = dayjs(period.end);
+
+            if (start.isValid() && end.isValid() && (start.isBefore(end) || start.isSame(end))) {
+                return [
+                    [
+                        text,
+                        {
+                            text,
+                            period: {
+                                start: start.format(DATE_FORMAT),
+                                end: end.format(DATE_FORMAT)
+                            }
+                        }
+                    ]
+                ];
+            }
+
+            return [];
+        });
+    }, [configs]);
+
+    const printItemText = useCallback((item: ShortcutsItem) => {
+        return item?.text ?? null;
+    }, []);
+
+    return shortcutOptions?.length ? (
+        <div className="md:border-b mb-3 lg:mb-0 lg:border-r lg:border-b-0 border-gray-300 dark:border-gray-700 pr-1">
             <ul className="w-full tracking-wide flex flex-wrap lg:flex-col pb-1 lg:pb-0">
-                {Object.entries(configs?.shortcuts || DEFAULT_SHORTCUTS).map(([key, item], index) =>
-                    key === "past" ? (
-                        (Array.isArray(item) ? item : []).map((item, index) => (
+                {shortcutOptions.map(([key, item], index: number) =>
+                    Array.isArray(item) ? (
+                        item.map((item, index) => (
                             <ItemTemplate key={index} item={item}>
                                 <>
-                                    {configs && configs.shortcuts && key in configs.shortcuts
-                                        ? callPastFunction(configs.shortcuts[key], item.daysNumber)
+                                    {key === "past" &&
+                                    configs?.shortcuts &&
+                                    key in configs.shortcuts &&
+                                    item.daysNumber
+                                        ? callPastFunction(
+                                              configs.shortcuts[key as "past"],
+                                              item.daysNumber
+                                          )
                                         : item.text}
                                 </>
                             </ItemTemplate>
                         ))
                     ) : (
                         <ItemTemplate key={index} item={item}>
-                            {printItemText(item)}
+                            <>
+                                {configs?.shortcuts && key in configs.shortcuts
+                                    ? typeof configs.shortcuts[
+                                          key as keyof typeof configs.shortcuts
+                                      ] === "object"
+                                        ? printItemText(item)
+                                        : configs.shortcuts[key as keyof typeof configs.shortcuts]
+                                    : printItemText(item)}
+                            </>
                         </ItemTemplate>
                     )
                 )}
             </ul>
         </div>
-    );
+    ) : null;
 };
 
 export default Shortcuts;

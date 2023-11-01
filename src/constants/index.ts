@@ -1,6 +1,4 @@
-import dayjs from "dayjs";
-
-import { formatDate, previousMonth } from "../helpers";
+import { ColorKeys, Colors } from "../types";
 
 export const COLORS = [
     "blue",
@@ -21,11 +19,27 @@ export const COLORS = [
     "fuchsia",
     "pink",
     "rose"
-];
+] as const;
 
-export const DEFAULT_COLOR = "blue";
+export const DEFAULT_COLOR: ColorKeys = "blue";
 
-export const BG_COLOR = {
+export const LANGUAGE = "en";
+
+export const DATE_FORMAT = "YYYY-MM-DD";
+
+export const START_WEEK = "sun";
+
+export const DATE_LOOKING_OPTIONS = ["forward", "backward", "middle"];
+
+export const DAYS = [0, 1, 2, 3, 4, 5, 6];
+
+export const MONTHS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+
+export const CALENDAR_SIZE = 42;
+
+// Beware, these maps of colors cannot be replaced with functions using string interpolation such as `bg-${color}-100`
+// as described in Tailwind documentation https://tailwindcss.com/docs/content-configuration#dynamic-class-names
+export const BG_COLOR: Colors = {
     100: {
         blue: "bg-blue-100",
         orange: "bg-orange-100",
@@ -104,7 +118,26 @@ export const BG_COLOR = {
     }
 };
 
-export const TEXT_COLOR = {
+export const TEXT_COLOR: Colors = {
+    500: {
+        blue: "text-blue-500",
+        orange: "text-orange-500",
+        yellow: "text-yellow-500",
+        red: "text-red-500",
+        purple: "text-purple-500",
+        amber: "text-amber-500",
+        lime: "text-lime-500",
+        green: "text-green-500",
+        emerald: "text-emerald-500",
+        teal: "text-teal-500",
+        cyan: "text-cyan-500",
+        sky: "text-sky-500",
+        indigo: "text-indigo-500",
+        violet: "text-violet-500",
+        fuchsia: "text-fuchsia-500",
+        pink: "text-pink-500",
+        rose: "text-rose-500"
+    },
     600: {
         blue: "text-blue-600",
         orange: "text-orange-600",
@@ -145,7 +178,7 @@ export const TEXT_COLOR = {
     }
 };
 
-export const BORDER_COLOR = {
+export const BORDER_COLOR: Colors = {
     500: {
         blue: "border-blue-500",
         orange: "border-orange-500",
@@ -186,7 +219,7 @@ export const BORDER_COLOR = {
     }
 };
 
-export const RING_COLOR = {
+export const RING_COLOR: Colors = {
     focus: {
         blue: "focus:ring-blue-500",
         orange: "focus:ring-orange-500",
@@ -227,51 +260,24 @@ export const RING_COLOR = {
     }
 };
 
-export const DEFAULT_SHORTCUTS = {
-    today: {
-        text: "Today",
-        period: {
-            start: formatDate(dayjs()),
-            end: formatDate(dayjs())
-        }
-    },
-    yesterday: {
-        text: "Yesterday",
-        period: {
-            start: formatDate(dayjs().subtract(1, "d")),
-            end: formatDate(dayjs().subtract(1, "d"))
-        }
-    },
-    past: [
-        {
-            daysNumber: 7,
-            text: "Last 7 days",
-            period: {
-                start: formatDate(dayjs().subtract(7, "d")),
-                end: formatDate(dayjs())
-            }
-        },
-        {
-            daysNumber: 30,
-            text: "Last 30 days",
-            period: {
-                start: formatDate(dayjs().subtract(30, "d")),
-                end: formatDate(dayjs())
-            }
-        }
-    ],
-    currentMonth: {
-        text: "This month",
-        period: {
-            start: formatDate(dayjs().startOf("month")),
-            end: formatDate(dayjs().endOf("month"))
-        }
-    },
-    pastMonth: {
-        text: "Last month",
-        period: {
-            start: formatDate(previousMonth(dayjs()).startOf("month")),
-            end: formatDate(previousMonth(dayjs()).endOf("month"))
-        }
+export const BUTTON_COLOR: Colors = {
+    focus: {
+        blue: "focus:ring-blue-500/50 focus:bg-blue-100/50",
+        orange: "focus:ring-orange-500/50 focus:bg-orange-100/50",
+        yellow: "focus:ring-yellow-500/50 focus:bg-yellow-100/50",
+        red: "focus:ring-red-500/50 focus:bg-red-100/50",
+        purple: "focus:ring-purple-500/50 focus:bg-purple-100/50",
+        amber: "focus:ring-amber-500/50 focus:bg-amber-100/50",
+        lime: "focus:ring-lime-500/50 focus:bg-lime-100/50",
+        green: "focus:ring-green-500/50 focus:bg-green-100/50",
+        emerald: "focus:ring-emerald-500/50 focus:bg-emerald-100/50",
+        teal: "focus:ring-teal-500/50 focus:bg-teal-100/50",
+        cyan: "focus:ring-cyan-500/50 focus:bg-cyan-100/50",
+        sky: "focus:ring-sky-500/50 focus:bg-sky-100/50",
+        indigo: "focus:ring-indigo-500/50 focus:bg-indigo-100/50",
+        violet: "focus:ring-violet-500/50 focus:bg-violet-100/50",
+        fuchsia: "focus:ring-fuchsia-500/50 focus:bg-fuchsia-100/50",
+        pink: "focus:ring-pink-500/50 focus:bg-pink-100/50",
+        rose: "focus:ring-rose-500/50 focus:bg-rose-100/50"
     }
 };

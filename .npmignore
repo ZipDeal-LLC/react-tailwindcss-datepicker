@@ -4,11 +4,18 @@ node_modules
 .vscode
 .idea
 assets
+.git
+pages
+styles
+.next
+.rollup.cache
+.husky
 ## Files
 babel.config.json
 tsconfig.json
 rollup.config.js
-.git
+next-env.d.ts
+next.config.js
 .gitignore
 .eslintignore
 .eslintrc.json
@@ -16,7 +23,7 @@ rollup.config.js
 .prettierignore
 .DS_Store
 npm-debug.log
-package-lock.json
-yarn.lock
+yarn-error.log
 tailwind.config.js
 postcss.config.js
+tsconfig.tsbuildinfo

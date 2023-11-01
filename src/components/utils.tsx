@@ -1,6 +1,6 @@
 import React, { useCallback, useContext } from "react";
 
-import { BG_COLOR, BORDER_COLOR, RING_COLOR } from "../constants";
+import { BG_COLOR, BORDER_COLOR, BUTTON_COLOR, RING_COLOR } from "../constants";
 import DatepickerContext from "../contexts/DatepickerContext";
 
 interface IconProps {
@@ -13,6 +13,7 @@ interface Button {
     disabled?: boolean;
     roundedFull?: boolean;
     padding?: string;
+    active?: boolean;
 }
 
 export const DateIcon: React.FC<IconProps> = ({ className = "w-6 h-6" }) => {
@@ -122,7 +123,7 @@ export const Arrow = React.forwardRef<HTMLDivElement, {}>((props, ref) => {
     return (
         <div
             ref={ref}
-            className="absolute z-20 h-4 w-4 rotate-45 mt-0.5 ml-[1.2rem] border-l border-t border-gray-300 bg-white"
+            className="absolute z-20 h-4 w-4 rotate-45 mt-0.5 ml-[1.2rem] border-l border-t border-gray-300 bg-white dark:bg-slate-800 dark:border-slate-600"
         />
     );
 });
@@ -134,7 +135,7 @@ export const SecondaryButton: React.FC<Button> = ({ children, onClick, disabled 
     // Functions
     const getClassName: () => string = useCallback(() => {
         const ringColor = RING_COLOR.focus[primaryColor as keyof typeof RING_COLOR.focus];
-        return `w-full transition-all duration-300 bg-white font-medium border border-gray-300 px-4 py-2 text-sm rounded-md focus:ring-2 focus:ring-offset-2 hover:bg-gray-50 ${ringColor}`;
+        return `w-full transition-all duration-300 bg-white dark:text-gray-700 font-medium border border-gray-300 px-4 py-2 text-sm rounded-md focus:ring-2 focus:ring-offset-2 hover:bg-gray-50 ${ringColor}`;
     }, [primaryColor]);
 
     return (
@@ -147,8 +148,8 @@ export const SecondaryButton: React.FC<Button> = ({ children, onClick, disabled 
 export const PrimaryButton: React.FC<Button> = ({ children, onClick, disabled = false }) => {
     // Contexts
     const { primaryColor } = useContext(DatepickerContext);
-    const bgColor = BG_COLOR["500"][primaryColor as keyof typeof BG_COLOR["500"]];
-    const borderColor = BORDER_COLOR["500"][primaryColor as keyof typeof BORDER_COLOR["500"]];
+    const bgColor = BG_COLOR["500"][primaryColor as keyof (typeof BG_COLOR)["500"]];
+    const borderColor = BORDER_COLOR["500"][primaryColor as keyof (typeof BORDER_COLOR)["500"]];
     const bgColorHover = BG_COLOR.hover[primaryColor as keyof typeof BG_COLOR.hover];
     const ringColor = RING_COLOR.focus[primaryColor as keyof typeof RING_COLOR.focus];
 
@@ -169,59 +170,30 @@ export const PrimaryButton: React.FC<Button> = ({ children, onClick, disabled = 
 export const RoundedButton: React.FC<Button> = ({
     children,
     onClick,
+    disabled,
     roundedFull = false,
-    padding = "py-[0.55rem]"
+    padding = "py-[0.55rem]",
+    active = false
 }) => {
     // Contexts
     const { primaryColor } = useContext(DatepickerContext);
 
     // Functions
     const getClassName = useCallback(() => {
+        const darkClass = "dark:text-white/70 dark:hover:bg-white/10 dark:focus:bg-white/10";
+        const activeClass = active ? "font-semibold bg-gray-50 dark:bg-white/5" : "";
         const defaultClass = !roundedFull
-            ? `w-full tracking-wide  transition-all duration-300 px-3 ${padding} uppercase hover:bg-gray-100 rounded-md focus:ring-1`
-            : "transition-all duration-300 hover:bg-gray-100 rounded-full p-[0.45rem] focus:ring-1";
-        switch (primaryColor) {
-            case "blue":
-                return `${defaultClass} focus:ring-blue-500/50 focus:bg-blue-100/50`;
-            case "orange":
-                return `${defaultClass} focus:ring-orange-500/50 focus:bg-orange-100/50`;
-            case "yellow":
-                return `${defaultClass} focus:ring-yellow-500/50 focus:bg-yellow-100/50`;
-            case "red":
-                return `${defaultClass} focus:ring-red-500/50 focus:bg-red-100/50`;
-            case "purple":
-                return `${defaultClass} focus:ring-purple-500/50 focus:bg-purple-100/50`;
-            case "amber":
-                return `${defaultClass} focus:ring-amber-500/50 focus:bg-amber-100/50`;
-            case "lime":
-                return `${defaultClass} focus:ring-lime-500/50 focus:bg-lime-100/50`;
-            case "green":
-                return `${defaultClass} focus:ring-green-500/50 focus:bg-green-100/50`;
-            case "emerald":
-                return `${defaultClass} focus:ring-emerald-500/50 focus:bg-emerald-100/50`;
-            case "teal":
-                return `${defaultClass} focus:ring-teal-500/50 focus:bg-teal-100/50`;
-            case "cyan":
-                return `${defaultClass} focus:ring-cyan-500/50 focus:bg-cyan-100/50`;
-            case "sky":
-                return `${defaultClass} focus:ring-sky-500/50 focus:bg-sky-100/50`;
-            case "indigo":
-                return `${defaultClass} focus:ring-indigo-500/50 focus:bg-indigo-100/50`;
-            case "violet":
-                return `${defaultClass} focus:ring-violet-500/50 focus:bg-violet-100/50`;
-            case "fuchsia":
-                return `${defaultClass} focus:ring-fuchsia-500/50 focus:bg-fuchsia-100/50`;
-            case "pink":
-                return `${defaultClass} focus:ring-pink-500/50 focus:bg-pink-100/50`;
-            case "rose":
-                return `${defaultClass} focus:ring-rose-500/50 focus:bg-rose-100/50`;
-            default:
-                return "";
-        }
-    }, [padding, primaryColor, roundedFull]);
+            ? `w-full tracking-wide ${darkClass} ${activeClass} transition-all duration-300 px-3 ${padding} uppercase hover:bg-gray-100 rounded-md focus:ring-1`
+            : `${darkClass} ${activeClass} transition-all duration-300 hover:bg-gray-100 rounded-full p-[0.45rem] focus:ring-1`;
+        const buttonFocusColor =
+            BUTTON_COLOR.focus[primaryColor as keyof typeof BUTTON_COLOR.focus];
+        const disabledClass = disabled ? "line-through" : "";
+
+        return `${defaultClass} ${buttonFocusColor} ${disabledClass}`;
+    }, [disabled, padding, primaryColor, roundedFull, active]);
 
     return (
-        <button className={getClassName()} onClick={onClick}>
+        <button type="button" className={getClassName()} onClick={onClick} disabled={disabled}>
             {children}
         </button>
     );
@@ -230,7 +202,7 @@ export const RoundedButton: React.FC<Button> = ({
 export const VerticalDash = () => {
     // Contexts
     const { primaryColor } = useContext(DatepickerContext);
-    const bgColor = BG_COLOR["500"][primaryColor as keyof typeof BG_COLOR["500"]];
+    const bgColor = BG_COLOR["500"][primaryColor as keyof (typeof BG_COLOR)["500"]];
 
     return <div className={`bg-blue-500 h-7 w-1 rounded-full hidden md:block ${bgColor}`} />;
 };
