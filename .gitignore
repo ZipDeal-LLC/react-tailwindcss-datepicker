@@ -7,7 +7,7 @@
 /.next/
 /.rollup.cache/
 
-# test coverage
+# test coverages
 coverage
 
 # builds
